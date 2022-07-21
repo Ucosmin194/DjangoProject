@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} All Students {% endblock %}
+{% block content %}
+    <body>
+<h1>Hi</h1>
+
+            <table class="table table-danger" style="width: 50%">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Is olympic</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for student in all_students %}
+                    <tr></tr>
+                        <td>{{ forloop.counter }}.</td>
+                        <td>{{ student.first_name }}</td>
+                        <td>{{ student.last_name }}</td>
+                        <td>{% if student.is_olympic is True %}
+                            Yes
+                            {% elif student.is_olympic is False %}
+                            No
+                        {% endif %}
+                        </td>
+                {% endfor %}
+            </tbody>
+            </table>
+    <a class='btn btn-success' href="{% url 'all_movies' %}"> Movie time!</a>
+
+{% endblock %}
+

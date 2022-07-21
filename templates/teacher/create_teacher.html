@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} Create a new teacher {% endblock %}
+{% block content %}
+    <div class="container bg-info bg-opacity-50"><br>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h3 class="text-center"> Create a new teacher</h3>
+                    </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="card-body">
+                                {{ form.as_p }}
+                            </div>
+                            <div class="card-footer text-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

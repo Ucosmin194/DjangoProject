@@ -1,0 +1,88 @@
+{%  extends 'base.html'%}
+{% block title %} List of students {% endblock %}
+{%  block content %}
+    <div class="container-fluid bg-danger bg-opacity-50"><br>
+            <div class="row justify-content-around">
+                <div class="col-md-4">
+                <form method='get'>
+                    <div class="card bg-danger bg-opacity-50">
+                        <div class="card-body">
+                            <div class="card-body">
+                                    {% for field in myFilter.form %}
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% endfor %}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class ='text-center'>
+                                <button type="submit" class="btn btn-success">Search</button>
+                            </div>
+                        </div>
+                    </div><br>
+                </form>
+                </div>
+                <div class="col-md-8">
+                    <table class="table table-danger table-striped border-white">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Format</th>
+                                <th>Category</th>
+                                <th>Summary</th>
+                                <th>Release Date</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for book in all_books %}
+                            <tr>
+                                <td>{{ book.title }}</td>
+                                <td>{{ book.author }}</td>
+                                <td>{{ book.format }}</td>
+                                <td>{{ book.category }}</td>
+                                <td>{{ book.summary | truncatechars:100}}</td>
+                                <td>{{book.release_date }}</td>
+                                <td>{% if book.is_in_stock is True %}
+                                        In stock
+                                    {% else %}
+                                        Not in stock
+                                    {% endif %}
+                                </td>
+                                <td>
+                                {% if not perms.book.add_book and not perms.book.change_book and not perms.book.delete_book %}
+                                    <a href="{% url 'details_book' book.id %}" class="btn btn-danger ">Details</a>
+                                {% else %}
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-danger dropdown-toggle"
+                                              data-bs-toggle="dropdown" aria-expanded="false">
+                                      Action
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'details_book' book.id %}">Details</a></li>
+                                        {% if perms.book.change_book %}
+                                            <li><a class="dropdown-item" href="{% url 'update_book' book.id %}">Update</a></li>
+                                        {% endif %}
+                                        {% if perms.book.out_of_stock_book %}
+                                            <li><a class="dropdown-item" href="{% url 'out_of_stock_book' book.id %}">Out of stock</a></li>
+                                        {% endif %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        {% if perms.book.delete_book %}
+                                            <li><a class="dropdown-item" href="{% url 'delete_book' book.id %}">Delete</a></li>
+                                        {% endif %}
+                                      </ul>
+                                    </div>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+{% endblock %}

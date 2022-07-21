@@ -1,0 +1,102 @@
+{%  extends 'base.html'%}
+{% block title %} List of students {% endblock %}
+{%  block content %}
+    <div class="container bg-warning bg-opacity-50"><br>
+        <div class="row justify-content-around">
+            <div class="col-md-4">
+            <form method='get'>
+                <div class="card bg-warning bg-opacity-50">
+                    <div class="card-body">
+                        <div class="card-body">
+                            {% for field in myFilter.form %}
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">{{ field.label }}</label>
+                                            {{ field }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class ='text-center'>
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                    </div>
+                </div><br>
+            </form>
+            </div>
+            <div class="col-md-8">
+                {% if all_students %}
+                <table class="table table-warning table-striped">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Is Olympic?</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Description</th>
+                            <th>Age</th>
+                            <th>Teacher</th>
+                            <th>Course</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in all_students %}
+                            <tr>
+                                <td>{{ student.first_name }}</td>
+                                <td>{{ student.last_name }}</td>
+                                <td>{% if student.is_olympic is True %}Yes{% else %} No {% endif %}</td>
+                                <td>{{ student.start_date | date:'d-m-Y H:i'}}</td>
+                                <td>{{ student.end_date | date:'d-m-Y H:i'}}</td>
+                                <td>{{ student.description }}</td>
+                                <td>{{ student.age }}</td>
+                                <td> {% if student.teacher %}
+                                        {{ student.teacher}}
+                                     {% else %}
+                                        No teacher
+                                     {% endif %}
+                                </td>
+                                <td>{% if student.teacher.course %}
+                                        {{ student.teacher.course }}
+                                    {% else %}
+                                        No course
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <!-- Example split danger button -->
+                                {% if not perms.student.add_student and not perms.student.change_student and not perms.student.delete_student %}
+                                    <a href="{% url 'details_student' student.id %}" class="btn btn-warning">Details</a>
+                                {% else %}
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-warning dropdown-toggle"
+                                              data-bs-toggle="dropdown" aria-expanded="false">
+                                      Action
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'details_student' student.id %}">Details</a></li>
+                                        {% if perms.student.change_student %}
+                                          <li><a class="dropdown-item" href="{% url 'update_student' student.id %}">Update</a></li>
+                                        {% endif %}
+                                        {% if perms.student.inactivate_student %}
+                                            <li><a class="dropdown-item" href="{% url 'inactive_student' student.id %}">Inactive student</a></li>
+                                        {% endif %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        {% if perms.student.delete_student %}
+                                            <li><a class="dropdown-item" href="{% url 'delete_student' student.id %}">Delete</a></li>
+                                        {% endif %}
+                                      </ul>
+                                    </div>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <h3>No results</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %} {{ student.first_name}} {{ student.last_name }} Details {% endblock %}
+{% block content %}
+    <div class="container bg-warning bg-opacity-50"><br>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card bg-warning">
+                    <img src="#" class="card-img-top" alt="Profile Pic">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ student.first_name }} {{ student.last_name }}</h5>
+                        <p class="card-text">{{ student.description }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Start date: {{ student.start_date | date:'d-m-Y H:i'}}</li>
+                        <li class="list-group-item">End date: {{ student.end_date | date:'d-m-Y H:i'}}</li>
+                        <li class="list-group-item">{% if student.is_olympic %}Is olympic{% else %} Is not olympic{% endif %}</li>
+                        <li class="list-group-item">Age: {{ student.age}}</li>
+                        <li class="list-group-item">Email: {{ student.email}}</li>
+                        <li class="list-group-item">Gender: {{ student.gender}}</li>
+                        <li class="list-group-item">Teacher: {{ student.teacher}}</li>
+                        <li class="list-group-item">Course: {{ student.teacher.course}}</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'list_of_students' %}" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

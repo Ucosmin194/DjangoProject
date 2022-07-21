@@ -1,0 +1,117 @@
+{%  extends 'base.html'%}
+{% block title %} List of students {% endblock %}
+{%  block content %}
+    <div class="container bg-info bg-opacity-50">
+        <div class="row justify-content-around">
+            <div class="col-md-4"><br>
+                <form method='get'>
+                <div class="card bg-info bg-opacity-50">
+                    <div class="card-body">
+                        <div class="card-body">
+                                {% for field in myFilter.form %}
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">{{ field.label }}</label>
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class ='text-center'>
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                    </div>
+                </div><br>
+            </form><br>
+            </div>
+
+            <div class="col-md-8">
+                <div class="row">
+                    {% for teacher in all_teachers %}
+                        <div class="col-md-4">
+                            {% if forloop.counter|divisibleby:2 %}
+                        <div class="card" style="width:17rem; margin: 3px;">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ teacher.first_name}} {{ teacher.last_name }}</h5>
+                                    <h3 class="'card-subtitle">{% if teacher.department == 'p' %} Python {% elif teacher.department == 'j' %}
+                                        Java {% else %} C# {% endif %}</h3>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Curs: {{ teacher.course|truncatechars:23}}</li>
+                                    <li class="list-group-item">{{ teacher.description|truncatechars:23}}</li>
+                                    <li class="list-group-item">Start:{{ teacher.start_date}}</li>
+                                    <li class="list-group-item">End: {{ teacher.end_date}}</li>
+                                </ul>
+                                <div class="card-body text-center">
+                                    {% if not perms.teacher.add_teacher and not perms.teacher.change_teacher and not perms.teacher.delete_teacher %}
+                                            <a href="{% url 'details_teacher' teacher.id %}" class="btn btn-info ">Details</a>
+                                    {% else %}
+                                    <div class="btn-group">
+                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                              Action
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                    {% if perms.teacher.change_teacher %}
+                                                        <li><a class='dropdown-item' href="{% url 'update_teacher' teacher.id %}">Update teacher!</a></li>
+                                                    {% endif %}
+                                                    <li><a class='dropdown-item' href="{% url 'details_teacher' teacher.id %}">Details teacher!</a></li>
+                                                    {% if perms.teacher.inactive_teacher %}
+                                                        <li><a class="dropdown-item" href="{% url 'inactive_teacher' teacher.id %}">Inactive teacher</a></li>
+                                                    {% endif %}
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    {% if perms.teacher.delete_teacher %}
+                                                        <li><a class='dropdown-item' href="{% url 'delete_teacher' teacher.id %}">Delete teacher!</a></li>
+                                                    {% endif %}
+                                                </ul>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                        </div>
+                    {% else %}
+                        <div class="card text-bg-light" style="width:17rem; margin: 3px">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ teacher.first_name}} {{ teacher.last_name }}</h5>
+                                    <h3 class="'card-subtitle">{% if teacher.department == 'p' %} Python {% elif teacher.department == 'j' %}
+                                        Java {% else %} C# {% endif %}</h3>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item text-bg-light">Curs: {{ teacher.course|truncatechars:23}}</li>
+                                    <li class="list-group-item text-bg-light">{{ teacher.description|truncatechars:23}}</li>
+                                    <li class="list-group-item text-bg-light">Start: {{ teacher.start_date}}</li>
+                                    <li class="list-group-item text-bg-light">End: {{ teacher.end_date}}</li>
+                                </ul>
+                                <div class="card-body text-center">
+                                    {% if not perms.teacher.add_teacher and not perms.teacher.change_teacher and not perms.teacher.delete_teacher %}
+                                            <a href="{% url 'details_teacher' teacher.id %}" class="btn btn-info ">Details</a>
+                                    {% else %}
+                                    <div class="btn-group">
+                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                              Action
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                    {% if perms.teacher.change_teacher %}
+                                                        <li><a class='dropdown-item' href="{% url 'update_teacher' teacher.id %}">Update teacher!</a></li>
+                                                    {% endif %}
+                                                    <li><a class='dropdown-item' href="{% url 'details_teacher' teacher.id %}">Details teacher!</a></li>
+                                                    {% if perms.teacher.inactive_teacher %}
+                                                        <li><a class="dropdown-item" href="{% url 'inactive_teacher' teacher.id %}">Inactive teacher</a></li>
+                                                    {% endif %}
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    {% if perms.teacher.delete_teacher %}
+                                                        <li><a class='dropdown-item' href="{% url 'delete_teacher' teacher.id %}">Delete teacher!</a></li>
+                                                    {% endif %}
+                                                </ul>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                        </div>
+                    {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>
+    </div>
+{% endblock %}

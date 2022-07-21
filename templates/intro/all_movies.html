@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %} All movies {% endblock %}
+{% block content %}
+
+    <div style="width: 50%">
+    <h1>Movie time!</h1>
+
+            <table class="table table-dark table-striped">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Director</th>
+                <th>Release date</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for movie in all_movies %}
+                    <tr></tr>
+                        <td>{{ forloop.counter }}.</td>
+                        <td>{{ movie.name }}</td>
+                        <td>{{ movie.director }}</td>
+                        <td>{% if movie.release_date < '2000' %}
+                            Classic
+                            {% elif movie.release_date > '2000' %}
+                            Over 2000
+                        {% endif %}
+                        </td>
+                {% endfor %}
+            </tbody>
+            </table>
+            <p>{{ movie.name }}</p>
+            <p>{{ movie.director }}</p>
+            <p>{{ movie.release_date }}</p>
+    </div>
+
+    <a class='btn btn-success' href="{% url 'all_students' %}"> Students!</a>
+{% endblock %}
+
+

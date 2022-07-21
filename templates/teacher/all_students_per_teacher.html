@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %} List of students {% endblock %}
+{% block content %}
+    <div class="container bg-warning bg-opacity-50"><br>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+            {% if all_students_per_teacher  %}
+                <table class="table table-warning table-striped">
+
+                    <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th> Last Name</th>
+                        <th> Is Oplympic?</th>
+                        <th> Start Date</th>
+                        <th> End Date</th>
+                        <th> Description</th>
+                        <th> Age</th>
+                        <th> Teacher</th>
+                        <th> Course</th>
+                        <th> Actions</th>
+                    </thead>
+                    <tbody>
+                    {% for student in all_students_per_teacher %}
+                        <tr>
+                            <td> {{ student.first_name }}</td>
+                            <td> {{ student.last_name }}</td>
+                            <td> {% if student.is_olympic is True %}  Yes {% else %} No {% endif %} </td>
+                            <td> {{ student.start_date|date:"d-m-Y H:i:s" }}</td>
+                            <td> {{ student.end_date|date:"d-m-Y H:i:s" }}</td>
+                            <td> {{ student.description }}</td>
+                            <td> {{ student.age }}</td>
+                            <td>
+                                {% if student.teacher %}
+                                    {{ student.teacher }}
+                                {% else %}
+                                    No teacher
+                                {% endif %}
+                            </td>
+
+                            <td>{% if student.teacher.course %}
+                                {{ student.teacher.course }}
+                            {% else %}
+                                No course
+                            {% endif %}
+                            </td>
+
+
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-warning dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'update_student'  student.id %}">Update</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{% url 'details_student'  student.id %}">Details</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{% url 'inactive_student'  student.id %}">Inactive</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item"
+                                               href="{% url 'delete_student' student.id %}">Delete</a></li>
+
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h3 class="text-center">No data available</h3>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

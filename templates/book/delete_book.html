@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} Delete - {{ book.title}} by {{ book.author }} {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center"> Are you sure you want to delete {{ book.title }} by {{ book.author }}?</h3>
+                    </div>
+                    <div class="card-footer text-center">
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm"> Yes </button>
+                                <a href="{%  url 'list_of_books' %}" class="btn btn-secondary btn-sm"> No </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

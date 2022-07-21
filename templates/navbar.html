@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg bg-light p-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Django Project</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        {% if user.is_authenticated  %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Students
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if perms.student.add_student %}
+                <li><a class="dropdown-item" href="{% url 'create_new_student' %}">Create a new student</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'list_of_students' %}">List of students</a></li>
+          </ul>
+        </li>
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Teachers
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if perms.teacher.add_teacher %}
+                <li><a class="dropdown-item" href="{% url 'create_new_teacher' %}">Create a new teacher</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'list_of_teachers' %}">List of teachers</a></li>
+          </ul>
+        </li>
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Books
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if perms.book.add_book %}
+                <li><a class="dropdown-item" href="{% url 'create_new_book' %}">Create a new book</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'list_of_books' %}">List of books</a></li>
+          </ul>
+        </li>
+             <li class="nav-item dropdown">
+             {% if perms.teacher.can_view_all_teachers %}
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                All Teachers
+                </a>
+             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for teacher in teachers %}
+                    <li><a class="dropdown-item" href="{% url 'all_students_per_teacher' teacher.id %}">{{ teacher.first_name }} {{ teacher.last_name }}</a></li>
+                {% endfor %}
+             </ul>
+                 {% endif %}
+             </li>
+        {% endif %}
+      </ul>
+        {% if user.is_authenticated %}
+            <a href="{%  url 'logout' %}" class="btn btn-outline-danger">Logout, {{ request.user.username }}</a>
+        {% else %}
+            <a href="{% url 'create_user' %}" class="btn btn-outline-secondary">SignUp</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-success">LogIn</a>
+        {% endif %}
+{#      <form class="d-flex" role="search">#}
+{#        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
+{#        <button class="btn btn-outline-success" type="submit">Search</button>#}
+{#      </form>#}
+    </div>
+  </div>
+</nav>

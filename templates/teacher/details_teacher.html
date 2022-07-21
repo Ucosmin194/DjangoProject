@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} {{ teacher.first_name}} {{ teacher.last_name }} Details {% endblock %}
+{% block content %}
+    <div class="container bg-info bg-opacity-50"><br>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card bg-info">
+                    <img src="#" class="card-img-top" alt="Profile Pic">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ teacher.first_name }} {{ teacher.last_name }}</h5>
+                        <p class="card-text">{{ teacher.department }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Course: {{ teacher.course }}</li>
+                        <li class="list-group-item">{{ teacher.description }}</li>
+                        <li class="list-group-item">Start date: {{ teacher.start_date | date:'d-m-Y H:i'}}</li>
+                        <li class="list-group-item">End date: {{ teacher.end_date | date:'d-m-Y H:i'}}</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'list_of_teachers' %}" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

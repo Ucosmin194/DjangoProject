@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} {{ book }} - Details {% endblock %}
+{% block content %}
+    <div class="container bg-danger bg-opacity-50"><br>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card bg-danger">
+                    <img src="#" class="card-img-top" alt="Book Pic">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">by {{ book.author }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{ book.summary }}</li>
+                        <li class="list-group-item">Category: {{ book.category }}</li>
+                        <li class="list-group-item">Format: {{ book.format}}</li>
+                        <li class="list-group-item">Release date: {{ book.release_date | date:'d-m-Y H:i'}}</li>
+                        <li class="list-group-item">{% if book.is_in_stock is True %}
+                                                        In stock
+                                                    {% else %}
+                                                        Not in stock
+                                                    {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'list_of_books' %}" class="btn btn-secondary">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
